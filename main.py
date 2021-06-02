@@ -8,12 +8,13 @@
 # -- repository: YOUR REPOSITORY URL                                                                     -- #
 # -- --------------------------------------------------------------------------------------------------- -- #
 """
-
+#%%
 # Import other scripts
-import data as dt
-import functions as fn
-import visualizations as vz
+from myst_amm_lab1 import data as dt
+from myst_amm_lab1 import functions as fn
 
+import visualizations as vz
+#%%
 # ---- Base
 
 # Step 1 - Read all the files

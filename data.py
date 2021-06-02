@@ -19,7 +19,7 @@ from os.path import isfile, join
 abspath = path.abspath("files/")
 
 # Read all the files within the files folder
-files = [f[8:4] for f in listdir(abspath) if isfile(join(abspath, f))]
+files = [f[8:-4] for f in listdir(abspath) if isfile(join(abspath, f))]
 
 # Chronologically ordered files list
 files = ["NAFTRAC_" + i.strftime("%Y%m%d") for i in sorted(pd.to_datetime(files))]
@@ -37,3 +37,4 @@ for i in files:
     data["Peso (%)"] = [i/100 for i in data["Peso (%)"]]
     # Save current file in dictionary of data
     data_files[i] = data
+

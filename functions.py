@@ -1,4 +1,3 @@
-
 """
 # -- --------------------------------------------------------------------------------------------------- -- #
 # -- project: A SHORT DESCRIPTION OF THE PROJECT                                                         -- #
@@ -8,14 +7,16 @@
 # -- repository: YOUR REPOSITORY URL                                                                     -- #
 # -- --------------------------------------------------------------------------------------------------- -- #
 """
+
 import pandas as pd
 import numpy as np
 import yfinance as yf
 import time
-import datetime
+from datetime import datetime,timedelta
+
 
 # Get Dates
-def f_date(p_files):
+def f_dates(p_files):
     # Labels for dataframe and yfinance
     t_dates = [i.strftime("%d-%m-%Y") for i in sorted([pd.to_datetime(i[8:]).date() for i in p_files])]
 
@@ -26,6 +27,7 @@ def f_date(p_files):
     r_f_dates = {"i_dates": i_dates, "t_dates": t_dates}
 
     return r_f_dates
+
 
 # Get Tickers
 def f_tickers(p_archivos, p_data_archivos):
@@ -42,9 +44,11 @@ def f_tickers(p_archivos, p_data_archivos):
 
     # Remove problematic tickers and cash entries
     [global_tickers.remove(i) for i in ["MXN.MX", "USD.MX", "KOFL.MX", "KOFUBL.MX,"
-                                        "BSMXB.MX", "SITESB.1.MX", "NEMAKA.MX", "NMKA.MX"]]
+                                                                       "BSMXB.MX", "SITESB.1.MX", "NEMAKA.MX",
+                                        "NMKA.MX"]]
 
     return global_tickers
+
 
 # Get Prices
 def f_get_prices(p_tickers, p_fechas):
@@ -76,6 +80,6 @@ def f_get_prices(p_tickers, p_fechas):
     precios = data_close.iloc[[int(np.where(data_close.index == i)[0]) for i in ic_fechas]]
 
     # Order columns
-    precios = precios.reindex(sorted(precios.columns), axis = 1)
+    precios = precios.reindex(sorted(precios.columns), axis=1)
 
     return {"precios": precios, "tiempo": tiempo}
