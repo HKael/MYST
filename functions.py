@@ -43,9 +43,8 @@ def f_tickers(p_archivos, p_data_archivos):
     global_tickers = [i.replace("LIVEPOLC.1.MX", "LIVEPOLC-1.MX") for i in global_tickers]
 
     # Remove problematic tickers and cash entries
-    [global_tickers.remove(i) for i in ["MXN.MX", "USD.MX", "KOFL.MX", "KOFUBL.MX,"
-                                                                       "BSMXB.MX", "SITESB.1.MX", "NEMAKA.MX",
-                                        "NMKA.MX"]]
+    [global_tickers.remove(i) for i in ["MXN.MX", "USD.MX", "KOFL.MX", "KOFUBL.MX",
+                                        "BSMXB.MX", "SITESB.1.MX", "NEMAKA.MX", "NMKA.MX"]]
 
     return global_tickers
 

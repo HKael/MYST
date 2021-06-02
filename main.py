@@ -1,4 +1,3 @@
-
 """
 # -- --------------------------------------------------------------------------------------------------- -- #
 # -- project: A SHORT DESCRIPTION OF THE PROJECT                                                         -- #
@@ -8,27 +7,28 @@
 # -- repository: YOUR REPOSITORY URL                                                                     -- #
 # -- --------------------------------------------------------------------------------------------------- -- #
 """
-#%%
+# %%
 # Import other scripts
-from myst_amm_lab1 import data as dt
-from myst_amm_lab1 import functions as fn
+import data as dt
+import functions as fn
 
 import visualizations as vz
-#%%
+
+# %%
 # ---- Base
 
 # Step 1 - Read all the files
 data_files = dt.data_files
 
 # Step 2 - Get all the dates
-dates = fn.f_dates(p_files = dt.files)
+dates = fn.f_dates(p_files=dt.files)
 
 # Display the first 5 dates in the 2 formats
 print(dates["i_dates"][0:4])
 print(dates["t_dates"][0:4])
 
 # Step 3 - Get the tickers for the calculations
-global_tickers = fn.f_tickers(p_archivos = dt.files, p_data_archivos = data_files)
+global_tickers = fn.f_tickers(p_archivos=dt.files, p_data_archivos=data_files)
 
 # Display global tickers
 print(global_tickers[0:4])
