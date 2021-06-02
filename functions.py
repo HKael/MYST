@@ -12,8 +12,7 @@ import pandas as pd
 import numpy as np
 import yfinance as yf
 import time
-from datetime import datetime,timedelta
-
+import datetime
 
 # Get Dates
 def f_dates(p_files):
@@ -28,7 +27,7 @@ def f_dates(p_files):
 
     return r_f_dates
 
-
+#%%
 # Get Tickers
 def f_tickers(p_archivos, p_data_archivos):
     tickers = []
@@ -48,7 +47,7 @@ def f_tickers(p_archivos, p_data_archivos):
 
     return global_tickers
 
-
+#%%
 # Get Prices
 def f_get_prices(p_tickers, p_fechas):
     # Initial date, no changes
@@ -73,7 +72,7 @@ def f_get_prices(p_tickers, p_fechas):
     # We assume NAFRTAC rebalance and Yahoo finance close price times align.
 
     # Only relevant dates
-    ic_fechas = sorted(list(set(data_close.index.astype(str).tolist() & set(p_fechas))))
+    ic_fechas = sorted(list(set(data_close.index.astype(str).tolist()) & set(p_fechas)))
 
     # All prices
     precios = data_close.iloc[[int(np.where(data_close.index == i)[0]) for i in ic_fechas]]
