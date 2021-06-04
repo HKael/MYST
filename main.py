@@ -25,17 +25,19 @@ dates = fn.f_dates(p_files=dt.files)
 # Display the first 5 dates in the 2 formats
 print(dates["i_dates"][0:4])
 print(dates["t_dates"][0:4])
-#%%
+# %%
 # Step 3 - Get the tickers for the calculations
 global_tickers = fn.f_tickers(p_archivos=dt.files, p_data_archivos=data_files)
 
 # Display global tickers
 print(global_tickers[0:4])
-#%%
+# %%
 # ---- Historical Prices
 global_prices = fn.f_get_prices(p_tickers=global_tickers, p_fechas=dates["i_dates"])
 precios = global_prices["precios"]
 
-# Show first and last five prices
-print(precios.head(5))
-print(precios.tail(5))
+# %%
+# DF pasivos
+df_pasiva_a = fn.tickin2(0, 25)
+
+df_pasiva_b = fn.tickin2(25, 39)

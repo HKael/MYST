@@ -13,6 +13,10 @@ import numpy as np
 import yfinance as yf
 import time
 import datetime
+from data import data
+import data as dt
+import pandas_datareader as web
+from data import files
 
 
 # Get Dates
@@ -84,3 +88,41 @@ def f_get_prices(p_tickers, p_fechas):
     precios = precios.reindex(sorted(precios.columns), axis=1)
 
     return {"precios": precios, "tiempo": tiempo}
+
+
+# %%
+def tickin2(start_date, last_date):
+    kay = pd.read_csv("files/a/NAFTRAC_20180131.csv", skiprows=2, header=0)
+    cash = (kay.iloc[35]["Peso (%)"] + kay.iloc[34]["Peso (%)"] + kay.iloc[16]["Peso (%)"] + kay.iloc[10][
+        "Peso (%)"]) / 100 * 1000000
+
+    kay["Ticker"] = [i.replace("*", "") for i in data["Ticker"]]
+
+    # Weight as decimal
+    kay["Ticker"] = kay["Ticker"] + '.MX'
+    kay = kay.drop([10, 16, 34, 35, 36])
+    kay = kay.sort_values(by=['Ticker'])
+    cash = cash + sum(kay["Peso (%)"] / 100 * 1000000 * 0.00125)
+    dates = f_dates(p_files=dt.files)
+    fechi = dates["i_dates"][start_date:last_date]
+    weight = np.array(kay["Peso (%)"])
+    kay["Ticker"] = kay["Ticker"].replace("LIVEPOLC.1.MX", "LIVEPOLC-1.MX")
+    kay["Ticker"] = kay["Ticker"].replace("SITESB.1.MX", "SITESB-1.MX")
+    symbols = np.array(kay["Ticker"])
+    startp = datetime.datetime.strptime(fechi[0], "%Y-%m-%d") - datetime.timedelta(days=1)
+    price_data = web.get_data_yahoo(symbols,
+                                    start=startp,
+                                    end=fechi[-1], interval='d')
+    price_data = price_data["Adj Close"]
+    price_data.index.strftime("%Y-%m-%d")
+    price_data = price_data.loc[fechi]
+    ret_data = price_data.pct_change()
+    weighted_returns = (weight * ret_data)
+    port_ret = weighted_returns.sum(axis=1) / 100
+    capital = 1000000 * (1 + port_ret) - cash
+    cumulative_ret = (port_ret + 1).cumprod() - 1
+    df_pasiva = pd.DataFrame()
+    df_pasiva["Capital"] = capital
+    df_pasiva["Rendimiento"] = port_ret
+    df_pasiva["Rendimiendo Acumulado"] = cumulative_ret
+    return df_pasiva
