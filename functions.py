@@ -125,4 +125,6 @@ def tickin2(start_date, last_date):
     df_pasiva["Capital"] = capital
     df_pasiva["Rendimiento"] = port_ret
     df_pasiva["Rendimiendo Acumulado"] = cumulative_ret
+    df_pasiva.index.names = ['Timestamp']
+    df_pasiva.index = df_pasiva.index.strftime("%d-%m-%Y")
     return df_pasiva
