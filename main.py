@@ -40,7 +40,7 @@ precios = global_prices["precios"]
 # DF pasivos
 df_pasiva_a = fn.tickin2(0, 25)
 
-df_pasiva_b = fn.tickin2(25, 39)
+df_pasiva_b = fn.tickin4(25, 39)
 
 #%% DF activa
 df_activa = fn.tickin3(0,39)
