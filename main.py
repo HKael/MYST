@@ -44,3 +44,6 @@ df_pasiva_b = fn.tickin2(25, 39)
 
 #%% DF activa
 df_activa = fn.tickin3(0,39)
+
+#%% Price data
+dprices = fn.tickin4(0,39)

@@ -136,7 +136,8 @@ def tickin2(start_date, last_date):
     df_pasiva.index = df_pasiva.index.strftime("%d-%m-%Y")
     return df_pasiva
 
-#%%
+
+# %%
 # %%
 def tickin3(start_date, last_date):
     # Datos base
@@ -167,7 +168,7 @@ def tickin3(start_date, last_date):
     price_data = price_data["Adj Close"]
     price_data.index.strftime("%Y-%m-%d")
     # Sacamos rendimientos, retornos y retornos acumulados
-    ret_data = np.log(price_data/price_data.shift())
+    ret_data = np.log(price_data / price_data.shift())
     weighted_returns = (weight * ret_data)
     port_ret = weighted_returns.sum(axis=1) / 100
     capital = 1000000 * (1 + port_ret) - cash
@@ -181,3 +182,35 @@ def tickin3(start_date, last_date):
     df_pasiva.index.names = ['Timestamp']
     df_pasiva.index = df_pasiva.index.strftime("%d-%m-%Y")
     return df_pasiva
+
+
+# %%
+# %%
+def tickin4(start_date, last_date):
+    # Datos base
+    kay = pd.read_csv("files/a/NAFTRAC_20180131.csv", skiprows=2, header=0)
+    # Transformamos a cash los activos seleccionados
+    cash = (kay.iloc[35]["Peso (%)"] + kay.iloc[34]["Peso (%)"] + kay.iloc[16]["Peso (%)"] + kay.iloc[10][
+        "Peso (%)"]) / 100 * 1000000
+    # Limpiamos tickers
+    kay["Ticker"] = [i.replace("*", "") for i in data["Ticker"]]
+    kay["Ticker"] = kay["Ticker"] + '.MX'
+    kay = kay.drop([10, 16, 34, 35, 36])
+    kay = kay.sort_values(by=['Ticker'])
+    cash = cash + sum(kay["Peso (%)"] / 100 * 1000000 * 0.00125)
+    dates = f_dates(p_files=dt.files)
+    # Seleccionamos las fechas mensuales
+    fechi = dates["i_dates"][start_date:last_date]
+    # Ponemos los pesos
+    weight = np.array(kay["Peso (%)"])
+    kay["Ticker"] = kay["Ticker"].replace("LIVEPOLC.1.MX", "LIVEPOLC-1.MX")
+    kay["Ticker"] = kay["Ticker"].replace("SITESB.1.MX", "SITESB-1.MX")
+    symbols = np.array(kay["Ticker"])
+    # Sacamos los datos de yahoo
+    startp = datetime.datetime.strptime(fechi[0], "%Y-%m-%d") - datetime.timedelta(days=1)
+    price_data = web.get_data_yahoo(symbols,
+                                    start=startp,
+                                    end=fechi[-1], interval='d')
+    # Acomodamos precios
+    price_data = price_data["Adj Close"]
+    return price_data

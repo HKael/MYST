@@ -38,3 +38,5 @@ for i in files:
     # Save current file in dictionary of data
     data_files[i] = data
 
+# %%
+initialdata = pd.read_csv("files/a/NAFTRAC_20180131.csv", skiprows=2, header=0)
