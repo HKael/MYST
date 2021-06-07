@@ -167,7 +167,7 @@ def tickin3(start_date, last_date):
     price_data = price_data["Adj Close"]
     price_data.index.strftime("%Y-%m-%d")
     # Sacamos rendimientos, retornos y retornos acumulados
-    ret_data = np.log(price_data / price_data.shift())
+    ret_data = np.log(price_data/price_data.shift())
     weighted_returns = (weight * ret_data)
     port_ret = weighted_returns.sum(axis=1) / 100
     capital = 1000000 * (1 + port_ret) - cash
@@ -180,5 +180,4 @@ def tickin3(start_date, last_date):
     df_pasiva["Rendimiendo Acumulado"] = cumulative_ret
     df_pasiva.index.names = ['Timestamp']
     df_pasiva.index = df_pasiva.index.strftime("%d-%m-%Y")
-    df_activa = df_pasiva
-    return df_activa
+    return df_pasiva
